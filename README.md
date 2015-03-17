@@ -1,5 +1,11 @@
-## Nyancat in your terminal
+## Nyancat!
 
 ![nyancat](nyancat.gif)
 
+##Usage
 
+```python
+import nyancat
+cat = nyancat.Nyancat()
+cat.run()
+```

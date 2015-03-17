@@ -43,10 +43,7 @@ class Nyancat(object):
         last = 0
 
         while True:
-            if self.clear_screen:
-                print '\033[H]',
-            else:
-                print '\033[u]',
+            print '\033[?25l]'
             for y in range(self.min_row, self.max_row):
                 for x in range(self.min_col, self.max_col):
                     if  23 < y < 43 and x < 0:
@@ -74,6 +71,8 @@ class Nyancat(object):
             if i == 11: i = 0
             last = 0
             time.sleep(0.1)
+    def __del__(self):
+        print '\033[?25h]'
 
 def main():
     nyancat = Nyancat()
