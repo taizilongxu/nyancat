@@ -2,7 +2,9 @@
 
 ![nyancat](nyancat.gif)
 
-##Usage
+from here: https://github.com/klange/nyancat
+
+## Usage
 
 ```python
 import nyancat
