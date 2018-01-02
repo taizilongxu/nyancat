@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 from frame import frames
+import signal
 import subprocess
 import time
 
@@ -25,14 +26,18 @@ class Nyancat(object):
     }
 
     def __init__(self):
+        self.set_screen_size()
+        self.output = ' '
+        self.clear_screen = 1  # TODO
+        self.always_escape = 0  # TODO
+        signal.signal(signal.SIGWINCH, self.set_screen_size)
+
+    def set_screen_size(self, signal=None, frame=None):
         self.terminal_height, self.terminal_width = self.linesnum()
         self.min_col = (self.FRAME_WIDTH - self.terminal_width/2) / 2
         self.max_col = (self.FRAME_WIDTH + self.terminal_width/2) / 2
         self.min_row = (self.FRAME_HEIGHT - (self.terminal_height-1)) / 2
         self.max_row = (self.FRAME_HEIGHT + (self.terminal_height-1)) / 2
-        self.output = ' '
-        self.clear_screen = 1  #TODO
-        self.always_escape = 0  #TODO
 
     def linesnum(self):
         '''测试屏幕显示行数,每行字符数'''
