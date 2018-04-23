@@ -3,6 +3,8 @@
 from frame import frames
 import subprocess
 import time
+from platform import system as system_name
+from os import system as system_call 
 
 class Nyancat(object):
     FRAME_HEIGHT = FRAME_WIDTH = 64  # frame size
@@ -29,7 +31,8 @@ class Nyancat(object):
         self.min_row = (self.FRAME_HEIGHT - (self.terminal_height-1)) / 2
         self.max_row = (self.FRAME_HEIGHT + (self.terminal_height-1)) / 2
         self.output = ' '
-        self.clear_screen = 1  #TODO
+        self.start_time = time.time()
+        #self.clear_screen = 1  #TODO
         self.always_escape = 0  #TODO
 
     def linesnum(self):
@@ -37,13 +40,18 @@ class Nyancat(object):
         num = subprocess.check_output('stty size', shell=True).split(' ')
         return int(num[0]), int(num[1])
 
+    def clear_screen(self):
+        command = "-cls" if system_name().lower()=="windows" else "clear"
+        system_call(command)
+
     def run(self):
         rainbow = ",,>>&&&+++###==;;;,,"
+        t = 0  # Time
         i = 0  # frame
         last = 0
 
         while True:
-            print '\033[?25l]'
+            #print '\033[?25l]'
             for y in range(self.min_row, self.max_row):
                 for x in range(self.min_col, self.max_col):
                     if  23 < y < 43 and x < 0:
@@ -70,9 +78,11 @@ class Nyancat(object):
             i += 1
             if i == 11: i = 0
             last = 0
-            time.sleep(0.1)
-    def __del__(self):
-        print '\033[?25h]'
+            t += 1
+            elapsed_time = time.time() - self.start_time
+            #print ' '*(self.max_col - 17) + 'You got Nyaned for ' + str(int(elapsed_time)) + ' seconds.' + ' '*(self.max_col - 17)
+            time.sleep(0.06)
+            self.clear_screen()
 
 def main():
     nyancat = Nyancat()
